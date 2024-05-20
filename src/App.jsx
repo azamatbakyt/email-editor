@@ -1,35 +1,38 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import styles from './App.module.scss'
+import { Details } from './Details'
 
-function App() {
-  const [count, setCount] = useState(0)
+const MENU = [
+	{
+		name: 'Home',
+		link: '/'
+	},
+	{
+		name: 'Products',
+		link: '/products'
+	}
+]
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+const isAuth = true
+const role = 'admin'
+
+export function App() {
+	const [user, setUser] = useState('Azamat Bakyt')
+
+	return (
+		<div className={styles.layout}>
+			<img src='/image.png' width={150} />
+
+			<h1>
+				{isAuth && role == 'admin'
+					? 'Авторизирован'
+					: 'Войдите в систему'}
+			</h1>
+			{MENU.map(item => (
+				<h2 key={item.link}>{item.name}</h2>
+			))}
+
+			<Details user={user} setUser={setUser} />
+		</div>
+	)
 }
-
-export default App
