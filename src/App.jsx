@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import styles from './App.module.scss'
 import { Details } from './Details'
 
@@ -17,22 +17,41 @@ const isAuth = true
 const role = 'admin'
 
 export function App() {
-	const [user, setUser] = useState('Azamat Bakyt')
+	const [details, setDetails] = useState({
+		isLoading: true,
+		name: 'Null',
+		position: 'Employee',
+		buttonText: 'Click'
+	})
 
+	const imageRef = useRef(null)
+	const onClick = () => {
+		if (!imageRef.current) return
+		imageRef.current.style.borderRadius = '20px'
+		imageRef.current.style.boxShadow = '0 3px 6px rgba(0, 0, 0, .5 )'
+	}
 	return (
 		<div className={styles.layout}>
-			<img src='/image.png' width={150} />
+			<img ref={imageRef} src='/image.png' width={150} />
+
+			<br />
+			<button onClick={onClick}>changeImage</button>
 
 			<h1>
 				{isAuth && role == 'admin'
 					? 'Авторизирован'
 					: 'Войдите в систему'}
 			</h1>
+
 			{MENU.map(item => (
 				<h2 key={item.link}>{item.name}</h2>
 			))}
 
-			<Details user={user} setUser={setUser} />
+			{details.isLoading ? (
+				<p>Loading...</p>
+			) : (
+				<Details details={details} setDetails={setDetails} />
+			)}
 		</div>
 	)
 }
